@@ -22,9 +22,20 @@ stepsPerDay <- aggregate(dataNoNA$steps, by=list(dataNoNA$date), FUN=sum)[2]
 
 ### Histogram of total steps per day
 
-```{r total_hist, fig.height=8, fig.width=8}
+
+```r
 qplot(stepsPerDay, geom="histogram")
 ```
+
+```
+## Don't know how to automatically pick scale for object of type data.frame. Defaulting to continuous
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![plot of chunk total_hist](figure/total_hist-1.png)
 
 ### Compute the mean of total steps per day
 
@@ -32,14 +43,14 @@ qplot(stepsPerDay, geom="histogram")
 meanTotalStepsPerDay <- mean(stepsPerDay$x)
 ```
 
-The mean of the total steps per day is `r meanTotalStepsPerDay`.
+The mean of the total steps per day is 1.0766189 &times; 10<sup>4</sup>.
 
 ### Compute the median of total steps per day
 ```
 medianTotalStepsPerDay <- median(stepsPerDay$x)
 ```
 
-The median of the total steps per day is `r medianTotalStepsPerDay`.
+The median of the total steps per day is 10765.
 
 ## What is the average daily activity pattern?
 
@@ -48,16 +59,20 @@ meanPerInterval <- aggregate(dataNoNA$steps, by=list(dataNoNA$interval), FUN=mea
 names(meanPerInterval) <- c("interval","steps")
 ```
 
-```{r daily_pattern, fig.height=8, fig.width=8}
+
+```r
 plot.ts(meanPerInterval[2])
 ```
 
+![plot of chunk daily_pattern](figure/daily_pattern-1.png)
+
 ## Which 5 minute interval contains the most number of steps?
-```{r most_steps}
+
+```r
 maxR <- meanPerInterval[which.max(meanPerInterval$steps), ]
 ```
 
-The interval with the most steps on average is interval `r maxR$interval`.
+The interval with the most steps on average is interval 835.
 
 ## Imputing missing values
 
@@ -66,7 +81,7 @@ The interval with the most steps on average is interval `r maxR$interval`.
 numMissing <- length(data[is.na(data)])
 ```
 
-There are `r numMissing` NA values.
+There are 2304 NA values.
 
 ### Devise a strategy for filling in missing data
   
@@ -90,13 +105,20 @@ meanImputed <- mean(totalStepsImputed$steps)
 medianImputed <- median(totalStepsImputed$steps)
 ```
 
-```{r imputedHistogram, fig.height=4}
+
+```r
 qplot(totalStepsImputed$steps, geom="histogram")
 ```
 
-Mean: `r meanImputed`
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
 
-Median: `r medianImputed`
+![plot of chunk imputedHistogram](figure/imputedHistogram-1.png)
+
+Mean: 1.0889799 &times; 10<sup>4</sup>
+
+Median: 1.1015 &times; 10<sup>4</sup>
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
@@ -112,9 +134,12 @@ weekdayAvg <- aggregate(dataWeekday$steps, by=list(dataWeekday$interval), FUN=me
 ```
 
 ### Plot of weekend vs weekday patterns
-```{r weekendPlot, fig.height=8}
+
+```r
 par(mfrow=c(2,1))
 plot.ts(weekendAvg[2], main="Weekend")
 plot.ts(weekdayAvg[2], main="Weekday")
 ```
+
+![plot of chunk weekendPlot](figure/weekendPlot-1.png)
 
